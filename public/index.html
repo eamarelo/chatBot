@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>ChatBot</title>
+    <style>
+    #zone_chat strong {
+        color: white;
+        background-color: black;
+        padding: 2px;
+    }
+
+    #formulaire_chat{
+        text-align: center;
+        margin-top: 33%;
+    }
+
+    .titleChatBot{
+        text-align: "center";
+        background-color: red;
+    }
+    #zone_chat{
+        background-color: #ccccff;
+        border :2px black solid;
+    }
+
+</style>
+</head>
+
+<body>
+    <h1 class="titleChatBot">The ChatBot</h1>
+
+    <section id="zone_chat">
+        <div id="infoposition"></div>
+    </section>
+
+    <form action="/" method="post" id="formulaire_chat">
+        <input type="text" name="message" id="message" placeholder="Votre message..." size="50" autofocus />
+        <input type="submit" id="envoi_message" value="Envoyer" />
+    </form>
+    <script src="bundle.js"></script>
+</body>
+</html>
