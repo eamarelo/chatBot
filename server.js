@@ -2,7 +2,8 @@ const app = require('express')(),
 express = require('express'),
 server = require('http').createServer(app),
 ent = require('ent'), 
-io = require('socket.io').listen(server);
+io = require('socket.io').listen(server),
+TheBotCarrefour = require('bot-carrefour');
 
 app.use('/', express.static(`${__dirname}/public`));
 
@@ -13,10 +14,18 @@ io.sockets.on('connection', function (socket, pseudo) {
     	socket.pseudo = pseudo;
     	socket.broadcast.emit('nouveau_client', pseudo);
     });
-     socket.on('message', function (message) {
-     message = ent.encode(message);
-     socket.broadcast.emit('message', {pseudo: socket.pseudo, message: message});
-   });
-     	
+    socket.on('message', function (message) {
+    	message = ent.encode(message);
+    	socket.broadcast.emit('message', {pseudo: socket.pseudo, message: message});
+    });
+
+    socket.on('messageCarrefour', function (message) {
+    	console.log('message', message);
+    	const myBot = new TheBotCarrefour(message[1], message[0]);
+    	
+    	myBot.echo();
+    	console.log('icccccci', myBot.getJson());
+    	socket.emit('messageCarrefour', myBot.getJson());
+    });	
 });
 server.listen(8080);
