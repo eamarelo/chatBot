@@ -56,6 +56,13 @@ document.getElementById('formulaire_chat').onsubmit = function () {
     getLocation()
 
     }
+    if (document.querySelector('#message').value.indexOf('/youtube') !== - 1){
+        let message2 = " a demandé youtube"
+        insereMessage(pseudo, message);
+       var keyWord = message.substr(9);
+       console.log('dededed' + keyWord);
+        socket.emit('msgYtb', keyWord);
+}
 
     socket.emit('message', message); // Transmet le message aux autres
     insereMessage(pseudo, message);
@@ -93,6 +100,28 @@ socket.on('messageCarrefour', body => {
 		document.querySelector('#zone_chat').appendChild(element);
 	}
 
+});
+
+socket.on('msgYtb', body => {
+	console.log("bodyy " ,  body);
+	var data = body;
+	for(let j = 0; j < data.items.length; j++){
+		console.log('dataindex', data.items[j]);
+		
+		console.log('console.log ' + data);
+		const element = document.createElement('p');
+		const textnode = document.createTextNode(pseudo + ':');
+		const iframeYoutube = document.createElement('iframe');
+
+		iframeYoutube.setAttribute('src', "http://www.youtube.com/embed/" + data.items[j].id.videoId);
+		iframeYoutube.setAttribute('width', '650');
+		iframeYoutube.setAttribute('height', '450');
+		iframeYoutube.setAttribute('frameborder', '0');
+		element.appendChild(textnode);
+
+		element.appendChild(iframeYoutube);
+		document.querySelector('#zone_chat').appendChild(element);
+	}
 });
 
 function insereMessage(pseudo, message) {

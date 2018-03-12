@@ -4,6 +4,7 @@ server = require('http').createServer(app),
 ent = require('ent'), 
 io = require('socket.io').listen(server),
 TheBotCarrefour = require('bot-carrefour');
+TheBotYoutube = require('bot-youtube');
 
 app.use('/', express.static(`${__dirname}/public`));
 
@@ -26,6 +27,14 @@ io.sockets.on('connection', function (socket, pseudo) {
     	myBot.echo();
     	console.log('icccccci', myBot.getJson());
     	socket.emit('messageCarrefour', myBot.getJson());
+    });	
+
+    socket.on('msgYtb', function (keyword) {
+    	console.log('message', keyword);
+    	const myBot = new TheBotYoutube(keyword);
+    	
+    	myBot.echo();
+    	socket.emit('msgYtb', myBot.getJson());
     });	
 });
 server.listen(8080);
