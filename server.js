@@ -5,6 +5,7 @@ ent = require('ent'),
 io = require('socket.io').listen(server),
 TheBotCarrefour = require('bot-carrefour');
 TheBotYoutube = require('bot-youtube');
+TheBotUber = require('bot-uber');
 
 app.use('/', express.static(`${__dirname}/public`));
 
@@ -21,20 +22,26 @@ io.sockets.on('connection', function (socket, pseudo) {
     });
 
     socket.on('messageCarrefour', function (message) {
-    	console.log('message', message);
-    	const myBot = new TheBotCarrefour(message[1], message[0]);
+    	const bot = new TheBotCarrefour(message[1], message[0]);
     	
-    	myBot.echo();
-    	console.log('icccccci', myBot.getJson());
-    	socket.emit('messageCarrefour', myBot.getJson());
+    	bot.echo();
+    	socket.emit('messageCarrefour', bot.getJson());
     });	
 
     socket.on('msgYtb', function (keyword) {
-    	console.log('message', keyword);
-    	const myBot = new TheBotYoutube(keyword);
+    	const bot = new TheBotYoutube(keyword);
     	
-    	myBot.echo();
-    	socket.emit('msgYtb', myBot.getJson());
+    	bot.echo();
+    	socket.emit('msgYtb', bot.getJson());
+    });	
+
+    socket.on('uber', function (message) {
+    	console.log('position', message);
+    	const bot = new TheBotUber(message[1], message[0]);
+    	
+    	bot.echo();
+    	console.log('uber', bot.getJson());
+    	socket.emit('uber', bot.getJson());
     });	
 });
 server.listen(8080);
