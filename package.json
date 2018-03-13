@@ -25,6 +25,7 @@
   "dependencies": {
     "babelify": "^8.0.0",
     "bot-carrefour": "^1.0.0",
+    "bot-meteo-by-echo": "^1.0.0",
     "bot-my-ip": "^1.0.0",
     "bot-uber-by-echo": "^1.0.0",
     "bot-youtube": "^1.0.0",

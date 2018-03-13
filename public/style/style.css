@@ -1,0 +1,48 @@
+    #zone_chat {
+        height: 450px;
+        overflow:auto;
+    }
+
+    #zone_chat strong {
+        color: white;
+        padding: 2px;
+        background-color: #ccccff;
+        border :2px black solid;
+    }
+
+    #formulaire_chat{
+        text-align: center;
+        margin-top: 30px;
+        width: 100%;
+        position: fixed;
+    }
+
+    .titleChatBot{
+        text-align: center;
+        background-color: red;
+    }
+
+    #container {
+        border: 2px solid #dedede;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    #message{
+        width: 80%;
+        padding: 5px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    #sendMessage{
+        border: 1px solid;
+        background-color: red;
+        padding: 10px;
+        border-radius: 10px;
+    }

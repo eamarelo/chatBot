@@ -9,30 +9,40 @@ document.title = pseudo + ' - ' + document.title;
 
 // Quand on reçoit un message, on l'insère dans la page
 socket.on('message', (data)=> {
-  insereMessage(data.pseudo, data.message);
+  showMessage(data.pseudo, data.message);
 });
 
+/*
+*display message to zone_chat id
+*/
 socket.on('nouveau_client', (pseudo)=> {
   let message = 'vient de se connecter';
 
-  insereMessage(pseudo, message);
+  showMessage(pseudo, message);
 });
 
-// Ajoute un message dans la page
+/*
+*display message to zone_chat id
+*/
 document.getElementById('formulaire_chat').onsubmit = ()=> {
   let message = document.getElementById('message').value;
+
+  /*
+*If message.value = /carrefour emit to server
+*/
 
   if (document.querySelector('#message').value.indexOf('/carrefour') !== - 1) {
     let message = ' a demandé carrefour';
 
-    insereMessage(pseudo, message);
+    showMessage(pseudo, message);
+
     const getLocation = ()=> {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition);
       } else {
         let message = ' NE PEUT PAS ACTIVER LA POSITION !!!!!';
 
-        insereMessage(pseudo, message);
+        showMessage(pseudo, message);
       }
     };
 
@@ -45,17 +55,20 @@ document.getElementById('formulaire_chat').onsubmit = ()=> {
     getLocation();
   }
 
+  /*
+*If message.value = /uber emit to server
+*/
   if (document.querySelector('#message').value.indexOf('/uber') !== - 1) {
     let message = ' a demandé uber';
 
-    insereMessage(pseudo, message);
+    showMessage(pseudo, message);
     const getLocation = ()=> {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition);
       } else {
         let message = ' NE PEUT PAS ACTIVER LA POSITION !!!!!';
 
-        insereMessage(pseudo, message);
+        showMessage(pseudo, message);
       }
     };
 
@@ -66,27 +79,50 @@ document.getElementById('formulaire_chat').onsubmit = ()=> {
     };
 
     getLocation();
+
+    /*
+*If message.value = /youtube emit to server
+*/
   }
   if (document.querySelector('#message').value.indexOf('/youtube') !== - 1) {
     let message2 = ' a demandé youtube';
 
-    insereMessage(pseudo, message2);
+    showMessage(pseudo, message2);
     var keyWord = message.substr(9);
 
     socket.emit('msgYtb', keyWord);
   }
+
+  /*
+*If message.value = /meteo emit to server
+*/
+  if (document.querySelector('#message').value.indexOf('/meteo') !== - 1) {
+    let message2 = ' a demandé la météo';
+
+    showMessage(pseudo, message2);
+    var city = message.substr(7);
+    socket.emit('meteo', city);
+  }
+
+  /*
+*If message.value = /ip emit to server
+*/
   if (document.querySelector('#message').value.indexOf('/ip') !== - 1) {
     let message2 = ' a demandé son ip';
 
-    insereMessage(pseudo, message2);
+    showMessage(pseudo, message2);
     socket.emit('myIp', message2);
   }
 
   socket.emit('message', message); // Transmet le message aux autres
-  insereMessage(pseudo, message);
+  showMessage(pseudo, message);
   message.value = '';
   return false;
 };
+
+/*
+*Create template from carrefour data api
+*/
 socket.on('messageCarrefour', body => {
   var data = body;
 
@@ -105,6 +141,7 @@ socket.on('messageCarrefour', body => {
     iframeCarrefour.setAttribute('width', '650');
     iframeCarrefour.setAttribute('height', '450');
     iframeCarrefour.setAttribute('frameborder', '0');
+    element.setAttribute('id', 'container');
     element.appendChild(textnode);
     element.appendChild(paragraph2);
     element.appendChild(textnode2);
@@ -116,6 +153,9 @@ socket.on('messageCarrefour', body => {
   }
 });
 
+/*
+*Create template from youtube data api
+*/
 socket.on('msgYtb', body => {
   var data = body;
 
@@ -128,6 +168,7 @@ socket.on('msgYtb', body => {
     iframeYoutube.setAttribute('width', '650');
     iframeYoutube.setAttribute('height', '450');
     iframeYoutube.setAttribute('frameborder', '0');
+    element.setAttribute('id', 'container');
     element.appendChild(textnode);
 
     element.appendChild(iframeYoutube);
@@ -135,6 +176,9 @@ socket.on('msgYtb', body => {
   }
 });
 
+/*
+*Create template from uber data api
+*/
 socket.on('uber', (body) => {
   var data = body;
   var destPosition = data[0];
@@ -155,6 +199,7 @@ socket.on('uber', (body) => {
     iframeCarrefour.setAttribute('width', '650');
     iframeCarrefour.setAttribute('height', '450');
     iframeCarrefour.setAttribute('frameborder', '0');
+    element.setAttribute('id', 'container');
     element.appendChild(textnode);
     element.appendChild(paragraph2);
     element.appendChild(textnode2);
@@ -166,15 +211,32 @@ socket.on('uber', (body) => {
   }
 });
 
-socket.on('myIp', (body) => {
-  let message = ' a demandé son ip: ' + body.ip;
-  insereMessage(pseudo, message);
+/*
+*Create template from openweathermap data api
+*/
+socket.on('meteo', (body) => {
+  const element = document.createElement('p');
+  const textnode = document.createTextNode(pseudo + ' a demandé la météo de :' + body.name + '. il y fait ' + body.main.temp + ' F°. L\'humidité est de: ' + body.main.humidity);
+
+  element.setAttribute('id', 'container');
+  element.appendChild(textnode);
+  document.querySelector('#zone_chat').appendChild(element);
 });
 
-function insereMessage (pseudo, message) {
+/*
+*Create template from showIp data api
+*/
+socket.on('myIp', (body) => {
+  let message = ' a demandé son ip: ' + body.ip;
+
+  showMessage(pseudo, message);
+});
+
+function showMessage (pseudo, message) {
   const element = document.createElement('p');
   const textnode = document.createTextNode(pseudo + ': ' + message);
 
+  element.setAttribute('id', 'container');
   element.appendChild(textnode);
   document.querySelector('#zone_chat').appendChild(element);
   document.getElementById('message').value = '';
