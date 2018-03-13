@@ -4,10 +4,16 @@
     <meta charset="utf-8" />
     <title>ChatBot</title>
     <style>
+
+    #zone_chat {
+        height: 500px;
+        overflow-y: scroll;
+    }
     #zone_chat strong {
         color: white;
-        background-color: black;
         padding: 2px;
+        background-color: #ccccff;
+        border :2px black solid;
     }
 
     #formulaire_chat{
@@ -20,8 +26,11 @@
         background-color: red;
     }
     #zone_chat{
-        background-color: #ccccff;
-        border :2px black solid;
+        
+    }
+
+    #message{
+        width: 100%;
     }
 
 </style>
@@ -34,7 +43,7 @@
     </section>
 
     <form action="/" method="post" id="formulaire_chat">
-        <input type="text" name="message" id="message" placeholder="Votre message..." size="50" autofocus />
+        <input type="text" name="message" id="message" placeholder="Votre message..." autofocus />
         <input type="submit" id="envoi_message" value="Envoyer" />
     </form>
     <script src="bundle.js"></script>

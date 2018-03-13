@@ -3,10 +3,11 @@ const express = require('express');
 const server = require('http').createServer(app);
 const ent = require('ent');
 const io = require('socket.io').listen(server);
-const TheBotCarrefour = require('bot-carrefour');
 
+const TheBotCarrefour = require('bot-carrefour');
 const TheBotYoutube = require('bot-youtube');
 const TheBotUber = require('bot-uber-by-echo');
+const TheBotIp = require('bot-my-ip');
 
 app.use('/', express.static(`${__dirname}/public`));
 io.sockets.on('connection', (socket)=> {
@@ -40,6 +41,14 @@ io.sockets.on('connection', (socket)=> {
 
     bot.echo();
     socket.emit('uber', bot.getJson());
+  });
+
+  socket.on('myIp', ()=> {
+    const bot = new TheBotIp();
+
+    bot.echo();
+    console.log(bot.getJson());
+    socket.emit('myIp', bot.getJson());
   });
 });
 server.listen(8080);
