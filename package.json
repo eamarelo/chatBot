@@ -25,7 +25,7 @@
   "dependencies": {
     "babelify": "^8.0.0",
     "bot-carrefour": "file:../bot-carrefour",
-    "bot-uber": "file:../bot-uber",
+    "bot-uber-by-echo": "file:../bot-uber-by-echo",
     "bot-youtube": "file:../bot-youtube",
     "brfs": "^1.4.4",
     "browserify": "^15.2.0",
